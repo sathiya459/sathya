@@ -59,27 +59,33 @@ End Function
 
 
 Function DeleteNonPersonalIds()
+	WriteToLogFile("Deleting Non-Personal IDs")
 	lastrow = inputExcelFile.Worksheets("Sheet1").UsedRange.Rows.Count
 	i=2
 	Do While  lastrow >= i
 		
+		i = i + 1
 	Loop
+	WriteToLogFile("Deleted Non-Personal IDs")
 End Function
 
 Function deleteDiabledIDs(EnabledIDColumnNo)
+	WriteToLogFile("Deleting Disabled IDs")
 	lastrow = inputExcelFile.Worksheets("Sheet1").UsedRange.Rows.Count
-	WriteToLogFile("Row count in Input file is" & lastrow)
+'	WriteToLogFile("Row count in Input file is" & lastrow)
 	i=2
 	Do While lastrow >= i
 		WriteToLogFile("Processing row " & i & inputExcelFile.Worksheets("Sheet1").Cells(i,EnabledIDColumnNo).Value)
 		IF Not inputExcelFile.Worksheets("Sheet1").Cells(i,EnabledIDColumnNo).Value = "Enabled" Then
 			Set SelectedRow = inputExcelFile.Worksheets("Sheet1").Cells(i,EnabledIDColumnNo).EntireRow
-			lastrow = lastrow - 1
-			WriteToLogFile("Row Deleted" & SelectedRow.Delete)
+			SelectedRow.Delete
+			lastrow = lastrow - 1			
+'			WriteToLogFile("Row Deleted")
 		Else
 			i = i + 1
 		End IF
 	Loop
+	WriteToLogFile("Deteled Disabled IDs")
 End Function
 
 Function CloseTempExcelFile()
@@ -99,7 +105,8 @@ End Function
 
 'Write the Statement to Log File
 Function WriteToLogFile(Statement)
-	logFile.Write Statement & vbCrlf
+	'logFile.Write Statement & vbCrlf
+	WScript.Echo Statement
 End Function
 
 'Closing log File
